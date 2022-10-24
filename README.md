@@ -2,6 +2,7 @@
 
 ## Preparation
 1. Create `.env` file in `./envs/wireguard` with reference to [the README.md](./envs/wireguard/README.md).
+1. Create `.env` file in `./envs/sslh` with reference to [the README.md](./envs/sslh/README.md).
 1. Execute the following command to open UDP port.
 
     ```sh

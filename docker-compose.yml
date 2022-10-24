@@ -24,6 +24,24 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
     restart: always
 
+  sslh:
+    build:
+      context: ./sslh
+      dockerfile: Dockerfile
+      args:
+        TZ: Asia/Tokyo
+    image: sslh
+    container_name: sslh
+    environment:
+      - TZ=Asia/Tokyo
+    env_file:
+      - ./envs/sslh/.env
+    networks:
+      - vpn
+    ports:
+      - 443:443
+    restart: always
+
 networks:
   vpn:
     name: vpn
