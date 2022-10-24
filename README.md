@@ -3,11 +3,13 @@
 ## Preparation
 1. Create `.env` file in `./envs/wireguard` with reference to [the README.md](./envs/wireguard/README.md).
 1. Create `.env` file in `./envs/sslh` with reference to [the README.md](./envs/sslh/README.md).
-1. Execute the following command to open UDP port.
+1. Execute the following command to open UDP port and TCP port.
 
     ```sh
     # Replace your-wireguard-serverport to value of SERVERPORT in ./envs/wireguard/.env
     sudo ufw allow your-wireguard-serverport/udp
+    # Replace your-sslh-serverport to value of SERVER_PORT in ./envs/sslh/.env
+    sudo ufw allow your-sslh-serverport/tcp
     # reload
     sudo ufw reload
     ```
