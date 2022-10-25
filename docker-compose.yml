@@ -16,7 +16,7 @@ services:
     networks:
       - vpn
     ports:
-      - ${HOST_WIREGUARD_SERVERPORT}:51820/udp
+      - ${HOST_WIREGUARD_SERVERPORT:-51820}:51820/udp
     volumes:
       - /lib/modules:/lib/modules
       - ./wireguard:/config

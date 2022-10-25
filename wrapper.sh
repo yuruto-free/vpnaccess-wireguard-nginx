@@ -26,7 +26,7 @@ while [ -n "$1" ]; do
     case "$1" in
         build )
             # build
-            ${wrapper_cmd} build --no-cache
+            docker-compose build --no-cache
             # remove old images
             docker images | grep none | awk '{print $3;}' | xargs -I{} docker rmi {}
             shift
@@ -38,14 +38,8 @@ while [ -n "$1" ]; do
             shift
             ;;
 
-        down | stop )
-            # destory or stop all containers
-            ${wrapper_cmd} "$1"
-            shift
-            ;;
-
-        ps )
-            ${wrapper_cmd} ps
+        down | stop | ps )
+            docker-compose "$1"
             shift
             ;;
 

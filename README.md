@@ -33,3 +33,14 @@ Enter the following command to start the container.
 ```sh
 ./wrapper.sh start
 ```
+
+## Check status/log
+Execute the following command.
+
+```sh
+# show process status
+./wrapper.sh ps
+
+# show log
+./wrapper.sh logs
+```
