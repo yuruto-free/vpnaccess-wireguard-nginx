@@ -7,7 +7,7 @@ SERVERPORT=51820
 PEERS=1
 PEERDNS=auto
 INTERNAL_SUBNET=10.1.2.0/24
-ALLOWEDIPS=10.1.2.1/24
+ALLOWEDIPS=10.1.2.0/24
 ```
 
 A function of each environment variable is given below.

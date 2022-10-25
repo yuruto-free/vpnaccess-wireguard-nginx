@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.7'
 
 services:
   wireguard:
@@ -18,7 +18,7 @@ services:
     ports:
       - ${HOST_WIREGUARD_SERVERPORT:-51820}:51820/udp
     volumes:
-      - /lib/modules:/lib/modules
+      - /lib/modules:/lib/modules:ro
       - ./wireguard:/config
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
@@ -40,6 +40,8 @@ services:
       - vpn
     ports:
       - 443:443
+    depends_on:
+      - wireguard
     restart: always
 
 networks:
