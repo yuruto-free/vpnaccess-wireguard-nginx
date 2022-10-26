@@ -18,7 +18,7 @@ services:
     ports:
       - ${HOST_WIREGUARD_SERVERPORT:-51820}:51820/udp
     volumes:
-      - /lib/modules:/lib/modules:ro
+      - /lib/modules:/lib/modules
       - ./wireguard:/config
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1

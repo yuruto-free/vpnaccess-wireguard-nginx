@@ -18,12 +18,32 @@ function update_host_envfile() {
     }
 }
 
-
-# update host environment file
-update_host_envfile > ${host_envfie}
+function Usage() {
+    echo $0 "build|start|down|stop|ps|logs|peers"
+    echo "  Options:"
+    echo "    * build"
+    echo "            build docker image"
+    echo "    * start"
+    echo "            create containers and start them"
+    echo "    * down"
+    echo "            stop and destroy containers"
+    echo "    * stop"
+    echo "            stop containers"
+    echo "    * ps"
+    echo "            show process status for each containers"
+    echo "    * logs"
+    echo "            show log for each containers"
+    echo "    * peers"
+    echo "            show peer configure file path of wireguard"
+}
 
 while [ -n "$1" ]; do
     case "$1" in
+        help | -h )
+            Usage
+            exit 0
+            ;;
+
         build )
             # build
             docker-compose build --no-cache
@@ -33,6 +53,8 @@ while [ -n "$1" ]; do
             ;;
 
         start )
+            # update host environment file
+            update_host_envfile > ${host_envfie}
             # create all containers
             ${wrapper_cmd} up -d
             shift
@@ -44,7 +66,12 @@ while [ -n "$1" ]; do
             ;;
 
         logs )
-            ${wrapper_cmd} logs -t | sort -t "|" -k 1,+2d
+            docker-compose logs -t | sort -t "|" -k 1,+2d
+            shift
+            ;;
+
+        peers )
+            ls wireguard/peer*/peer*.conf | grep -v "^$" | xargs -I{} echo ${PWD}/{}
             shift
             ;;
 

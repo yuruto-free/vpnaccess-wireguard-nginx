@@ -4,9 +4,11 @@ Create an environment variable configuration file `.env` in the following format
 ```sh
 SERVERURL=example.vpn.con
 SERVERPORT=51820
-PEERS=1
+PEERS=PublicServer,myPhone
 PEERDNS=auto
 INTERNAL_SUBNET=10.1.2.0/24
+MTU=1380
+KEEP_ALIVE=10
 ALLOWEDIPS=10.1.2.0/24
 ```
 
@@ -19,4 +21,6 @@ A function of each environment variable is given below.
 |PEERS|Optional. Number of peers to create confs for. <br> Can also be a list of names: `myPC,myPhone,myTablet` (alphanumeric only)|
 |PEERDNS|Optional. DNS server set in peer/client configs.|
 |INTERNAL_SUBNET|Optional. Internal subnet for the wireguard and server and peers.|
+|MTU|Maximum datagram size that can be transferred in one communication.|
+|KEEP_ALIVE|Interval of communication confirmation.|
 |ALLOWEDIPS|Optional. The IPs/Ranges that the peers will be able to reach using the VPN connection.|
