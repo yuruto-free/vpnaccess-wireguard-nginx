@@ -80,7 +80,7 @@ server {
     client_max_body_size 32M;
 
     location / {
-        proxy_pass https://${PROXY_IP_ADDR}:443/;
+        proxy_pass http://${PROXY_IP_ADDR}:${PROXY_PORT}/;
 
         proxy_set_header Host              $host;
         proxy_set_header X-Forwarded-Host  $server_name;

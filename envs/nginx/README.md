@@ -13,6 +13,7 @@ SSL_CERTKEY_PATH=/etc/nginx/default_certs/default.key
 SSL_STAPLING_VERIFY=off
 SSL_TRUSTED_CERTIFICATE_PATH=/etc/nginx/default_certs/default.crt
 PROXY_IP_ADDR=10.1.2.2
+PROXY_PORT=8080
 ```
 
 A function of each environment variable is given below.
@@ -29,3 +30,4 @@ A function of each environment variable is given below.
 |SSL_STAPLING_VERIFY|OCSP Stapling mode|
 |SSL_TRUSTED_CERTIFICATE_PATH|Default SSL certfication file paht|
 |PROXY_IP_ADDR|proxy ip address|
+|PROXY_PORT|proxy port|

@@ -46,7 +46,7 @@ fi
 
 # create config file
 cat /etc/nginx/template/default.template | \
-    envsubst '$$VHOST_NAME $$SSL_CERT_PATH $$SSL_CERTKEY_PATH $$SSL_STAPLING_VERIFY $$SSL_TRUSTED_CERTIFICATE_PATH $$PROXY_IP_ADDR' > /etc/nginx/conf.d/default.conf
+    envsubst '$$VHOST_NAME $$SSL_CERT_PATH $$SSL_CERTKEY_PATH $$SSL_STAPLING_VERIFY $$SSL_TRUSTED_CERTIFICATE_PATH $$PROXY_IP_ADDR $$PROXY_PORT' > /etc/nginx/conf.d/default.conf
 
 is_running=1
 
