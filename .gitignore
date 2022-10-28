@@ -1,8 +1,4 @@
 # Environments
-.env
+.env*
 !.gitkeep
-wireguard/coredns
-wireguard/peer*
-wireguard/server
-wireguard/wg0.conf
-wireguard/.donoteditthisfile
+wireguard

@@ -2,22 +2,20 @@
 
 ## Preparation
 1. Create `.env` file in `./envs/wireguard` with reference to [the README.md](./envs/wireguard/README.md).
-1. Create `.env` file in `./envs/sslh` with reference to [the README.md](./envs/sslh/README.md).
-1. Execute the following command to open UDP port and TCP port.
+1. Create `.env` file in `./envs/nginx` with reference to [the README.md](./envs/nginx/README.md).
+1. Execute the following command to open UDP port.
 
     ```sh
     # Replace your-wireguard-serverport to value of SERVERPORT in ./envs/wireguard/.env
     sudo ufw allow your-wireguard-serverport/udp
-    # Replace your-sslh-serverport to value of SERVER_PORT in ./envs/sslh/.env
-    sudo ufw allow your-sslh-serverport/tcp
     # reload
     sudo ufw reload
     ```
 
-1. Make sure that you have the current file permissions.
+1. Give the current user execute permissions.
 
     ```sh
-    chmod +x wrapper.sh # Give the current user execute permissions.
+    chmod +x wrapper.sh
     ```
 
 1. Update `PUID` and `PGID` in `docker-compose.yml`. These IDs can be obtained by executing the following command.
