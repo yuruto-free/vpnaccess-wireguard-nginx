@@ -1,0 +1,91 @@
+# If we receive X-Forwarded-Proto, pass it through; otherwise, pass along the
+# scheme used to connect to this server
+map $http_x_forwarded_proto $proxy_x_forwarded_proto {
+  default $http_x_forwarded_proto;
+  ''      $scheme;
+}
+# If we receive X-Forwarded-Port, pass it through; otherwise, pass along the
+# server port the client connected to
+map $http_x_forwarded_port $proxy_x_forwarded_port {
+  default $http_x_forwarded_port;
+  ''      $server_port;
+}
+# If we receive Upgrade, set Connection to "upgrade"; otherwise, delete any
+# Connection header that may have been passed to this server
+map $http_upgrade $proxy_connection {
+  default upgrade;
+  '' close;
+}
+# Set appropriate X-Forwarded-Ssl header
+map $scheme $proxy_x_forwarded_ssl {
+  default off;
+  https on;
+}
+gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+# HTTP 1.1 support
+proxy_http_version 1.1;
+proxy_buffering off;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection $proxy_connection;
+proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
+proxy_set_header X-Forwarded-Ssl $proxy_x_forwarded_ssl;
+proxy_set_header X-Forwarded-Port $proxy_x_forwarded_port;
+# Mitigate httpoxy attack (see README for details)
+proxy_set_header Proxy "";
+
+server {
+    server_name _; # This is just an invalid value which will never trigger on a real hostname.
+    listen 80;
+    access_log off;
+    error_log /dev/null crit;
+    return 503;
+}
+server {
+    server_name _; # This is just an invalid value which will never trigger on a real hostname.
+    listen 443 ssl http2;
+    access_log off;
+    error_log /dev/null crit;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384';
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_tickets off;
+    ssl_certificate /etc/nginx/default_certs/default.crt;
+    ssl_certificate_key /etc/nginx/default_certs/default.key;
+    ssl_dhparam /etc/nginx/default_certs/dhparam.pem;
+    return 503;
+}
+
+server {
+    server_name ${VHOST_NAME};
+    listen 443 ssl http2;
+    access_log /var/log/nginx/access.log main;
+    error_log /var/log/nginx/error.log error;
+    # setup SSL/TLS
+    ssl_protocols TLSv1.3;
+    ssl_ciphers 'HIGH !aNULL !eNULL !kECDH !DSS !MD5 !EXP !PSK !SRP !CAMELLIA !SEED !RSA';
+    ssl_prefer_server_ciphers on;
+    ssl_session_timeout 5m;
+    ssl_session_tickets off;
+    ssl_certificate     ${SSL_CERT_PATH};
+    ssl_certificate_key ${SSL_CERTKEY_PATH};
+    ssl_dhparam /etc/nginx/default_certs/dhparam.pem;
+    ssl_stapling on;
+    ssl_stapling_verify ${SSL_STAPLING_VERIFY};
+    ssl_trusted_certificate ${SSL_TRUSTED_CERTIFICATE_PATH};
+    resolver 8.8.4.4 8.8.8.8 valid=300s;
+    resolver_timeout 15s;
+    add_header Strict-Transport-Security "max-age=31536000" always;
+    client_max_body_size 32M;
+
+    location / {
+        proxy_pass http://${PUBLIC_SERVER_IP_ADDR}:${PUBLIC_SERVER_PORT}/;
+
+        proxy_set_header Host              $host;
+        proxy_set_header X-Forwarded-Host  $server_name;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
