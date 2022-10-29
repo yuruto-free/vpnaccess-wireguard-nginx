@@ -25,7 +25,7 @@ ENV MYDNSJP_MASTER_ID=masterid \
     SSL_CERTKEY_PATH=/etc/nginx/default_certs/default.key \
     SSL_STAPLING_VERIFY=off \
     SSL_TRUSTED_CERTIFICATE_PATH=/etc/nginx/default_certs/default.crt \
-    PUBLIC_SERVER_IP_ADDR=10.1.2.2 \
+    PUBLIC_SERVER_IP_ADDR=10.0.16.3 \
     PUBLIC_SERVER_PORT=8080
 
 VOLUME ["/etc/letsencrypt"]

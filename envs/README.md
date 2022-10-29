@@ -4,7 +4,7 @@ Create an environment variable configuration file `.env` in the following format
 
 ```sh
 SERVER_ALLOWEDIPS_PEER_PublicServer=10.0.16.0/24
-PUBLIC_SERVER_IP_ADDR=10.0.16.2
+PUBLIC_SERVER_IP_ADDR=10.0.16.3
 PUBLIC_SERVER_PORT=8080
 ```
 

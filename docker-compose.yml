@@ -16,6 +16,8 @@ services:
         TZ: 'Asia/Tokyo'
     image: custom.nginx
     container_name: nginx
+    environment:
+      - TZ=Asia/Tokyo
     env_file:
       - ./envs/.env
       - ./envs/nginx/.env

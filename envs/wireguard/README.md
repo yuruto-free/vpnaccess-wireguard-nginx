@@ -3,7 +3,7 @@
 Create an environment variable configuration file `.env` in the following format.
 
 ```sh
-SERVERURL=example.vpn.con
+SERVERURL=example.vpn.com
 SERVERPORT=51820
 PEERS=PublicServer,myPhone
 PEERDNS=auto
