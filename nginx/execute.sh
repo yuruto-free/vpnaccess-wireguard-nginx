@@ -45,8 +45,16 @@ else
 fi
 
 # create config file
-cat /etc/nginx/template/default.template | \
-    envsubst '$$VHOST_NAME $$SSL_CERT_PATH $$SSL_CERTKEY_PATH $$SSL_STAPLING_VERIFY $$SSL_TRUSTED_CERTIFICATE_PATH $$PROXY_IP_ADDR $$PROXY_PORT' > /etc/nginx/conf.d/default.conf
+readonly env_vars=$({
+    echo '$$VHOST_NAME'
+    echo '$$SSL_CERT_PATH'
+    echo '$$SSL_CERTKEY_PATH'
+    echo '$$SSL_STAPLING_VERIFY'
+    echo '$$SSL_TRUSTED_CERTIFICATE_PATH'
+    echo '$$PUBLIC_SERVER_IP_ADDR'
+    echo '$$PUBLIC_SERVER_PORT'
+} | tr '\n' ' ')
+cat /etc/nginx/template/default.template | envsubst "${env_vars}" > /etc/nginx/conf.d/default.conf
 
 is_running=1
 

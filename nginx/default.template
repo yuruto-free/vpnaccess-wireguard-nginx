@@ -80,7 +80,7 @@ server {
     client_max_body_size 32M;
 
     location / {
-        proxy_pass http://${PROXY_IP_ADDR}:${PROXY_PORT}/;
+        proxy_pass http://${PUBLIC_SERVER_IP_ADDR}:${PUBLIC_SERVER_PORT}/;
 
         proxy_set_header Host              $host;
         proxy_set_header X-Forwarded-Host  $server_name;
