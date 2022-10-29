@@ -1,4 +1,4 @@
-# VPN Access used by WireGuard and SSLH
+# VPN Access used by WireGuard and Nginx
 
 ## Preparation
 1. Create `.env` file in `./envs` with reference to [the README.md](./envs/README.md).
