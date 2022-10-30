@@ -1,7 +1,6 @@
 # VPN Access used by WireGuard and Nginx
 
 ## Preparation
-1. Create `.env` file in `./envs` with reference to [the README.md](./envs/README.md).
 1. Create `.env` file in `./envs/wireguard` with reference to [the README.md](./envs/wireguard/README.md).
 1. Create `.env` file in `./envs/nginx` with reference to [the README.md](./envs/nginx/README.md).
 1. Create `cli.ini` file in `./nginx` with reference to [the sample.cli.ini](./nginx/sample.cli.ini).
@@ -28,7 +27,12 @@
 1. Give the current user execute permissions.
 
     ```sh
+    # for wrapper.sh
     chmod +x wrapper.sh
+    # for postdown.sh and postup.sh in `wireguard/iptables_script`
+    pushd wireguard/iptables_script
+    chmod +x postdown.sh postup.sh
+    popd
     ```
 
 1. Update `PUID` and `PGID` in `docker-compose.yml`. These IDs can be obtained by executing the following command.
@@ -40,21 +44,33 @@
     # PUID = 1000 (= uid), PGID = 1000 (= gid)
     ```
 
-## Build
+## Execution
+### Build
 Run the following command and create several images.
 
 ```sh
 ./wrapper.sh build
 ```
 
-## Start
+### Start
 Enter the following command to start the container.
 
 ```sh
 ./wrapper.sh start
 ```
 
-## Check status/log
+### Stop/Down
+Run the following command.
+
+```sh
+# stop
+./wrapper.sh stop
+
+# down
+./wrapper.sh down
+```
+
+### Check status/log
 Execute the following command.
 
 ```sh
