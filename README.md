@@ -4,6 +4,18 @@
 1. Create `.env` file in `./envs` with reference to [the README.md](./envs/README.md).
 1. Create `.env` file in `./envs/wireguard` with reference to [the README.md](./envs/wireguard/README.md).
 1. Create `.env` file in `./envs/nginx` with reference to [the README.md](./envs/nginx/README.md).
+1. Create `cli.ini` file in `./nginx` with reference to [the sample.cli.ini](./nginx/sample.cli.ini).
+1. Check `.env` and `cli.ini` files exist.
+
+    ```sh
+    ls envs/.* envs/*/.* nginx/cli.ini | grep "\.env$\|cli.ini"
+    # results:
+    #   envs/.env
+    #   envs/nginx/.env
+    #   envs/wireguard/.env
+    #   nginx/cli.ini
+    ```
+
 1. Execute the following command to open UDP port.
 
     ```sh

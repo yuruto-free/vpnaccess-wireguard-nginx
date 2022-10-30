@@ -3,9 +3,6 @@
 Create an environment variable configuration file `.env` in the following format.
 
 ```sh
-MYDNSJP_MASTER_ID=masterid
-MYDNSJP_PASSWORD=password
-MYDNS_EMAIL_ADDR=user@example.com
 BASE_DOMAIN_NAME=example.com
 VHOST_NAME=www.example.com
 SSL_CERT_PATH=/etc/nginx/default_certs/default.crt
@@ -18,9 +15,6 @@ A function of each environment variable is given below.
 
 |Env|Funciton|
 |:----|:----|
-|MYDNSJP_MASTER_ID|MyDNS login ID|
-|MYDNSJP_PASSWORD|MyDNS login password|
-|MYDNS_EMAIL_ADDR|MyDNS e-mail address|
 |BASE_DOMAIN_NAME|Fully Qualified Domain Name|
 |VHOST_NAME|Virtual Host name|
 |SSL_CERT_PATH|Default SSL certfication file path|
