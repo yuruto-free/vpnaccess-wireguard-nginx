@@ -7,9 +7,8 @@
 1. Check `.env` and `cli.ini` files exist.
 
     ```sh
-    ls envs/.* envs/*/.* nginx/cli.ini | grep "\.env$\|cli.ini"
+    ls envs/*/.* nginx/cli.ini | grep "\.env$\|cli.ini"
     # results:
-    #   envs/.env
     #   envs/nginx/.env
     #   envs/wireguard/.env
     #   nginx/cli.ini
