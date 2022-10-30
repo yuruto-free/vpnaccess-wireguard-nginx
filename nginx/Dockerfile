@@ -16,10 +16,7 @@ RUN    apk --no-cache update \
     && rm -rf /var/cache/apk/*
 
 # Set environment
-ENV MYDNSJP_MASTER_ID=masterid \
-    MYDNSJP_PASSWORD=password \
-    MYDNS_EMAIL_ADDR=user@example.com \
-    BASE_DOMAIN_NAME=example.com \
+ENV BASE_DOMAIN_NAME=example.com \
     VHOST_NAME=www.example.com \
     SSL_CERT_PATH=/etc/nginx/default_certs/default.crt \
     SSL_CERTKEY_PATH=/etc/nginx/default_certs/default.key \
@@ -32,6 +29,8 @@ VOLUME ["/etc/letsencrypt"]
 
 # add dns-01 script
 COPY ./direct_edit /data/direct_edit
+# add cli.ini
+COPY ./cli.ini /data/cli.ini
 # copy certs to default_certs
 COPY ./local_certs /etc/nginx/default_certs
 

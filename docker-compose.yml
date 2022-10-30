@@ -19,7 +19,6 @@ services:
     environment:
       - TZ=Asia/Tokyo
     env_file:
-      - ./envs/.env
       - ./envs/nginx/.env
     network_mode: service:wireguard
     volumes:
@@ -42,7 +41,6 @@ services:
       - PGID=1000
       - TZ=Asia/Tokyo
     env_file:
-      - ./envs/.env
       - ./envs/wireguard/.env
     networks:
       - vpn

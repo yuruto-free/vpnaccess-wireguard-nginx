@@ -1,0 +1,6 @@
+# Environments
+coredns
+peer*
+server
+wg0.conf
+.donoteditthisfile
