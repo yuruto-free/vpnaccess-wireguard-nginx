@@ -5,13 +5,14 @@ Create an environment variable configuration file `.env` in the following format
 ```sh
 SERVERURL=example.vpn.com
 SERVERPORT=51820
-PEERS=PublicServer,myPhone
+PEERS=PublicServer,LocalServer,myPhone
 PEERDNS=auto
 INTERNAL_SUBNET=10.1.2.0/24
 MTU=1380
 KEEP_ALIVE=10
 ALLOWEDIPS=10.1.2.0/24
 SERVER_ALLOWEDIPS_PEER_PublicServer=10.0.16.0/24
+SERVER_ALLOWEDIPS_PEER_LocalServer=10.0.20.0/24
 ```
 
 A function of each environment variable is given below.

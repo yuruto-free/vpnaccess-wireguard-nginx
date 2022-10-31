@@ -1,5 +1,4 @@
 # VPN Access used by WireGuard and Nginx
-
 ## Preparation
 1. Create `.env` file in `./envs/wireguard` with reference to [the README.md](./envs/wireguard/README.md).
 1. Create `.env` file in `./envs/nginx` with reference to [the README.md](./envs/nginx/README.md).
@@ -28,7 +27,7 @@
     ```sh
     # for wrapper.sh
     chmod +x wrapper.sh
-    # for postdown.sh and postup.sh in `wireguard/iptables_script`
+    # for postdown.sh and postup.sh in wireguard/iptables_script
     pushd wireguard/iptables_script
     chmod +x postdown.sh postup.sh
     popd
