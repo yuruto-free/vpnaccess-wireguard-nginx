@@ -25,6 +25,7 @@ services:
       - certs:/etc/letsencrypt
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/default.template:/etc/nginx/template/default.template:ro
+      - ./nginx/html:/var/www/html
     depends_on:
       - wireguard
     restart: always

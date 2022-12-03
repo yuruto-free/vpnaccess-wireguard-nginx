@@ -51,6 +51,7 @@ server {
     listen 443 ssl http2;
     access_log /var/log/nginx/access.log main;
     error_log /var/log/nginx/error.log error;
+
     # setup SSL/TLS
     ssl_protocols TLSv1.3;
     ssl_ciphers 'HIGH !aNULL !eNULL !kECDH !DSS !MD5 !EXP !PSK !SRP !CAMELLIA !SEED !RSA';
@@ -67,8 +68,20 @@ server {
     resolver_timeout 15s;
     add_header Strict-Transport-Security "max-age=31536000" always;
     client_max_body_size 32M;
+    # setup error page
+    error_page 503 @maintenance;
 
     location / {
+        # check maintenance mode
+        set $is_maintenance false;
+
+        if (-e /var/www/html/is_maintenance) {
+            set $is_maintenance true;
+        }
+        if ($is_maintenance = true) {
+            return 503;
+        }
+
         proxy_pass http://${PUBLIC_SERVER_IP_ADDR}:${PUBLIC_SERVER_PORT}/;
         proxy_http_version 1.1;
         proxy_buffering off;
@@ -85,5 +98,12 @@ server {
         proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
         proxy_set_header X-Forwarded-Ssl   $proxy_x_forwarded_ssl;
         proxy_set_header X-Forwarded-Port  $proxy_x_forwarded_port;
+    }
+
+    location @maintenance {
+        root /var/www/html/maintenance;
+        index index.html;
+        expires 0;
+        rewrite ^(.*)$ /index.html break;
     }
 }
