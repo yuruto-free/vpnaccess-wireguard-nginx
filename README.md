@@ -78,3 +78,16 @@ Execute the following command.
 # show log
 ./wrapper.sh logs
 ```
+
+## Maintenance mode
+If you want to put Nginx into maintenance mode, execute the following command.
+
+```sh
+touch ./nginx/html/is_maintenance
+```
+
+To exit maintenance mode, run the following command.
+
+```sh
+rm ./nginx/html/is_maintenance
+```

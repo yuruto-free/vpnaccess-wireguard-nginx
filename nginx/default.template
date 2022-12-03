@@ -14,7 +14,7 @@ map $http_x_forwarded_port $proxy_x_forwarded_port {
 # Connection header that may have been passed to this server
 map $http_upgrade $proxy_connection {
   default upgrade;
-  '' close;
+  ''      close;
 }
 # Set appropriate X-Forwarded-Ssl header
 map $scheme $proxy_x_forwarded_ssl {
@@ -22,17 +22,6 @@ map $scheme $proxy_x_forwarded_ssl {
   https on;
 }
 gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
-
-# HTTP 1.1 support
-proxy_http_version 1.1;
-proxy_buffering off;
-proxy_set_header Upgrade $http_upgrade;
-proxy_set_header Connection $proxy_connection;
-proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
-proxy_set_header X-Forwarded-Ssl $proxy_x_forwarded_ssl;
-proxy_set_header X-Forwarded-Port $proxy_x_forwarded_port;
-# Mitigate httpoxy attack (see README for details)
-proxy_set_header Proxy "";
 
 server {
     server_name _; # This is just an invalid value which will never trigger on a real hostname.
@@ -62,6 +51,7 @@ server {
     listen 443 ssl http2;
     access_log /var/log/nginx/access.log main;
     error_log /var/log/nginx/error.log error;
+
     # setup SSL/TLS
     ssl_protocols TLSv1.3;
     ssl_ciphers 'HIGH !aNULL !eNULL !kECDH !DSS !MD5 !EXP !PSK !SRP !CAMELLIA !SEED !RSA';
@@ -78,14 +68,42 @@ server {
     resolver_timeout 15s;
     add_header Strict-Transport-Security "max-age=31536000" always;
     client_max_body_size 32M;
+    # setup error page
+    error_page 503 @maintenance;
 
     location / {
-        proxy_pass http://${PUBLIC_SERVER_IP_ADDR}:${PUBLIC_SERVER_PORT}/;
+        # check maintenance mode
+        set $is_maintenance false;
 
+        if (-e /var/www/html/is_maintenance) {
+            set $is_maintenance true;
+        }
+        if ($is_maintenance = true) {
+            return 503;
+        }
+
+        proxy_pass http://${PUBLIC_SERVER_IP_ADDR}:${PUBLIC_SERVER_PORT}/;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade           $http_upgrade;
+        proxy_set_header Connection        $proxy_connection;
+        # Mitigate httpoxy attack (see README for details)
+        proxy_set_header Proxy "";
+
+        proxy_redirect off;
         proxy_set_header Host              $host;
         proxy_set_header X-Forwarded-Host  $server_name;
         proxy_set_header X-Real-IP         $remote_addr;
         proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
+        proxy_set_header X-Forwarded-Ssl   $proxy_x_forwarded_ssl;
+        proxy_set_header X-Forwarded-Port  $proxy_x_forwarded_port;
+    }
+
+    location @maintenance {
+        root /var/www/html/maintenance;
+        index index.html;
+        expires 0;
+        rewrite ^(.*)$ /index.html break;
     }
 }
